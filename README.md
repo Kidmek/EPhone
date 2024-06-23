@@ -55,12 +55,16 @@ To run this project, you will need Android Studio and an Android device or emula
 - **Time Filters**: Implement filtering options based on the transaction date and time.
 - **Current Balance**: Implement cards for each banks to show last checked balance and checked time
 
+
+## Preview
+
+
+
+https://github.com/Kidmek/EPhone/assets/61234322/93594d3a-623b-4065-9c44-bc927a4d0cfb
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or create issues for bugs and feature requests.
 
 
-
-
-https://github.com/Kidmek/EPhone/assets/61234322/93594d3a-623b-4065-9c44-bc927a4d0cfb
 
