@@ -29,6 +29,9 @@ class HomeFragment : Fragment() {
     private lateinit var allTv:AppCompatTextView
     private lateinit var spinner:Spinner
 
+    private var selectedType: Type?= null
+    private var selectedBank: Bank?= null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,10 +82,19 @@ class HomeFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val item = parent.getItemAtPosition(position).toString()
                 if(item == "All"){
-                    customAdapter.updateMessages( viewModel.messages.value ?: emptyList())
+                    selectedBank= null
+                    customAdapter.updateMessages(
+                        if (selectedType == null )viewModel.messages.value ?: emptyList()
+                        else viewModel.messages.value?.filter {
+                            it.debit_or_credit == selectedType
+                            } ?: emptyList()
+                        )
                 }else {
+                    selectedBank= Bank.valueOf(item)
                     val newMessages = viewModel.messages.value?.filter {
-                        it.bank_name === Bank.valueOf(item).fullName
+                        it.bank_name == Bank.valueOf(item).fullName &&
+                                (selectedType == null || it.debit_or_credit == selectedType)
+
                     }
                     customAdapter.updateMessages( newMessages ?: emptyList())
 
@@ -97,26 +109,37 @@ class HomeFragment : Fragment() {
         // tabs to filter by transaction type if its debited or credited or all
         allTv.setOnClickListener{ view: View ->
             if(checkIfActive(view)){
+                selectedType=null;
                 changeActive(allTv,null)
                 if(viewModel.messages.value != null){
-                    customAdapter.updateMessages(viewModel.messages.value!!)
+                    customAdapter.updateMessages(
+                        if (selectedBank == null )viewModel.messages.value ?: emptyList()
+                        else viewModel.messages.value?.filter {
+                            it.bank_name == selectedBank!!.fullName
+                        } ?: emptyList()
+                    )
                 }
             }
         }
         creditedLL.setOnClickListener{ view: View ->
             if(checkIfActive(view)){
+                selectedType=Type.Credited
                 changeActive(creditedTv,creditedLL)
                 val newMessages = viewModel.messages.value?.filter {
-                    it.debit_or_credit === Type.Credited
+                    it.debit_or_credit == Type.Credited
+                            &&
+                            (selectedBank == null || it.bank_name == selectedBank!!.fullName)
                 }
                 customAdapter.updateMessages(newMessages ?: emptyList())
             }
         }
         debitedLL.setOnClickListener{ view: View ->
             if(checkIfActive(view)){
+                selectedType=Type.Debited
                 changeActive(debitedTv,debitedLL)
                 val newMessages = viewModel.messages.value?.filter {
-                    it.debit_or_credit === Type.Debited
+                    it.debit_or_credit == Type.Debited &&
+                    (selectedBank == null || it.bank_name == selectedBank!!.fullName)
                 }
                 customAdapter.updateMessages(newMessages ?: emptyList())
             }
