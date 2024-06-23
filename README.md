@@ -16,7 +16,7 @@ To run this project, you will need Android Studio and an Android device or emula
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/yourusername/your-repository-name.git
+   git clone https://github.com/Kidmek/EPhone.git
 
 2. **Open the Project in Android Studio**:
 
@@ -43,7 +43,7 @@ To run this project, you will need Android Studio and an Android device or emula
 
 ### Chart Fragment
 
-- **Functionality**: Visualizes transaction data on a line chart.
+- **Functionality**: Visualizes transaction amount on a line chart (x-axis: days ago , y-axis: balance) .
 - **Filters**: Includes a dropdown to filter data by bank.
 - **Interactivity**:
   - Supports vertical zoom to adjust value scale and horizontal zoom to adjust the time range.
@@ -53,9 +53,14 @@ To run this project, you will need Android Studio and an Android device or emula
 
 - **Dynamic Bank Addition**: Introduce a settings page to add and configure new banks and their SMS codes.
 - **Time Filters**: Implement filtering options based on the transaction date and time.
+- **Current Balance**: Implement cards for each banks to show last checked balance and checked time
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or create issues for bugs and feature requests.
 
+
+
+
+https://github.com/Kidmek/EPhone/assets/61234322/93594d3a-623b-4065-9c44-bc927a4d0cfb
 
