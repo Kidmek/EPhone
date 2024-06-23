@@ -32,7 +32,7 @@ To run this project, you will need Android Studio and an Android device or emula
 
 ### Home Fragment
 
-- **Functionality**: Displays a list of recent transactions retrieved via SMS from predefined banks such as BOA (Bank of Abyssinia) and CBE (Commercial Bank of Ethiopia).
+- **Functionality**: Displays a list of recent transactions retrieved (plus real time updates) via SMS from predefined banks such as BOA (Bank of Abyssinia) and CBE (Commercial Bank of Ethiopia).
 - **Filters**: Users can filter transactions by All, Credited, and Debited.
 - **Transaction Details**: Each transaction entry shows:
   - Transaction type icon (credit or debit)
