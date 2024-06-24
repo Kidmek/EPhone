@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
 
         val smsReceiver = SmsReceiver { message ->
             viewModel.addMessage(message)
+            viewModel.updateAccount(message.bank_name,message)
         }
 
         val filter = IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION).apply {
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private  fun loadFragment(fragment: Fragment){
+        checkAndRequestPermissions()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container,fragment)
         transaction.commit()
@@ -104,16 +106,19 @@ class MainActivity : AppCompatActivity() {
         val cursor = contentResolver.query(smsUri,
             null, null,
             null, null)
-        var index = 0;
 
         cursor?.use {
             val indexBody = cursor.getColumnIndex("body")
             val indexAddress = cursor.getColumnIndex("address")
             val indexDate = cursor.getColumnIndex("date")
+            val messages: MutableList<Message> = mutableListOf()
+            val accounts: MutableList<Message> = mutableListOf()
+            val checked = mutableListOf<String>()
+
             while (cursor.moveToNext() ) {
                 val smsBody = cursor.getString(indexBody)
                 val address = cursor.getString(indexAddress)
-                val date=cursor.getLong(indexDate);
+                val date=cursor.getLong(indexDate)
                 val dt =
                     LocalDateTime.ofInstant(
                         Instant.ofEpochMilli(date),TimeZone.getDefault().toZoneId());
@@ -121,12 +126,17 @@ class MainActivity : AppCompatActivity() {
                     val message =Helper.parseMessage(smsBody,dt)
                     if(message != null){
                         message.bank_name = Bank.valueOf(address.trim()).fullName;
-                        viewModel.addMessage(message)
+                        messages.add(message)
+                        if (!checked.contains(message.bank_name)){
+                            Log.d("Checked","${checked.size}")
+                            checked.add(message.bank_name)
+                            accounts.add(message)
+                        }
                     }
                 }
-
-                index++;
             }
+            viewModel.addAccounts(accounts)
+            viewModel.updateMessages(messages)
         }
         Log.i("READING", "Finished");
     }

@@ -1,6 +1,7 @@
 package com.example.ephone.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ephone.R
+import com.example.ephone.adapter.AccountAdapter
 import com.example.ephone.adapter.RecentAdapter
 import com.example.ephone.model.Bank
+import com.example.ephone.model.Message
 import com.example.ephone.model.Type
 import com.example.ephone.viewModel.SharedViewModel
+import com.github.islamkhsh.CardSliderViewPager
+import java.time.LocalDateTime
 
 
 class HomeFragment : Fragment() {
@@ -56,18 +61,24 @@ class HomeFragment : Fragment() {
         debitedLL =root.findViewById(R.id.debited)
         creditedLL =root.findViewById(R.id.credited)
 
-
+        val cardSlider: CardSliderViewPager = root.findViewById(R.id.accountSlider)
+        val accountAdapter = AccountAdapter(viewModel.accounts.value?: emptyList())
+        cardSlider.adapter=accountAdapter
         viewModel.messages.observe(viewLifecycleOwner){
             customAdapter.updateMessages(it)
+        }
+        viewModel.accounts.observe(viewLifecycleOwner){
+            accountAdapter.updateAccounts(it)
         }
 
         spinner= root.findViewById(R.id.spinner)
 
+        val dropdownItems = listOf("All") + enumValues<Bank>()
         // Create an ArrayAdapter using a simple spinner layout and an array
-        val adapter = ArrayAdapter.createFromResource(
+        val adapter = ArrayAdapter(
             requireContext(),
-            R.array.dropdown_items, // This is a string array resource, defined in res/values/strings.xml
-            android.R.layout.simple_spinner_item
+            android.R.layout.simple_spinner_item,
+            dropdownItems
         )
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.custom_drop_down_item)
@@ -176,6 +187,21 @@ class HomeFragment : Fragment() {
             if(it!= linearLayout){
                 it.setBackgroundResource(R.drawable.grey_rounded_box_12dp)
             }
+        }
+    }
+    private fun getAccountBalances():List<Message>{
+        val balances = mutableListOf<Message>()
+        val checked = mutableListOf<String>()
+        return if(viewModel.messages.value == null) {
+            emptyList();
+        }else{
+            viewModel.messages.value!!.forEach{
+                if (!checked.contains(it.bank_name)){
+                    balances.add(it)
+                    checked.add(it.bank_name)
+                }
+            }
+            balances
         }
     }
 }

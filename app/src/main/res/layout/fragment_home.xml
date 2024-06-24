@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.HomeFragment">
 
     <LinearLayout
@@ -36,6 +36,29 @@
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:backgroundTint="@color/purple_200"
                 />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            >
+            <com.github.islamkhsh.CardSliderViewPager
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/accountSlider"
+                android:layout_marginVertical="24dp"
+                app:cardSlider_smallScaleFactor="0.9"
+                app:cardSlider_otherPagesWidth="24dp"
+                app:cardSlider_pageMargin="12dp"
+                app:cardSlider_indicator="@id/indicator"
+                />
+            <com.github.islamkhsh.CardSliderIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/indicator"
+                android:layout_gravity="center"
+                app:indicatorsToShow="5" />
         </LinearLayout>
 
         <LinearLayout android:gravity="start"
