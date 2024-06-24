@@ -27,7 +27,7 @@ To run this project, you will need Android Studio and an Android device or emula
 
    - Connect your Android device or use the AVD Manager to start an emulator.
    - Run the application through Android Studio by pressing `Shift + F10` or clicking the Run button.
-   - Edit dropdown_items in strings.xml resource and Bank enums in Message.kt to add or remove banks.
+   - Edit Bank enums in Message.kt to add or remove banks.
 
 ## App Overview
 
