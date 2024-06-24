@@ -54,19 +54,20 @@ To run this project, you will need Android Studio and an Android device or emula
 
 - **Dynamic Bank Addition**: Introduce a settings page to add and configure new banks and their SMS codes.
 - **Time Filters**: Implement filtering options based on the transaction date and time.
-- **Current Balance**: Implement cards for each banks to show last checked balance and checked time
 - **Pagination**: Implement pagination and loading status for efficiency.
 
 
 ## Preview
 
 
-
-https://github.com/Kidmek/EPhone/assets/61234322/93594d3a-623b-4065-9c44-bc927a4d0cfb
+https://github.com/Kidmek/EPhone/assets/61234322/6ef0a7bd-5c04-4333-a67e-5c1b277fea1e
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or create issues for bugs and feature requests.
+
+
+
 
 
 
