@@ -1,13 +1,14 @@
 package com.example.ephone.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.ephone.R
@@ -30,9 +31,20 @@ import java.time.LocalDateTime
 class ChartFragment : Fragment() {
 
     private lateinit var chart: LineChart
+    private lateinit var paginationLL: LinearLayout
+    private lateinit var paginationTV: TextView
+    private lateinit var previousBtn: TextView
+    private lateinit var nextBtn: TextView
+
     private lateinit var viewModel: SharedViewModel
 
     private lateinit var spinner: Spinner
+    private var page = 0
+    private val PAGE_SIZE = 100
+    private var selectedBank: String?= null
+    private var totalMaxSize = 0
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +56,13 @@ class ChartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_chart, container, false);
+        val root = inflater.inflate(R.layout.fragment_chart, container, false)
         chart = root.findViewById(R.id.idLineChart)
+        paginationLL = root.findViewById(R.id.paginationLL)
+        paginationTV = root.findViewById(R.id.paginationTV)
+        previousBtn = root.findViewById(R.id.previousBtn)
+        nextBtn = root.findViewById(R.id.nextBtn)
+
         val datas = ArrayList<LineDataSet>()
 
         spinner= root.findViewById(R.id.spinner)
@@ -63,20 +80,27 @@ class ChartFragment : Fragment() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val item = parent.getItemAtPosition(position).toString()
-                val filteredDataSets = if (item == "All") {
-                    getAllBankDataSets()
+                selectedBank = if (item == "All") {
+                    null
                 } else {
-                    getBankDataSets(item)
+                    item
                 }
-
-                chart.data = LineData(filteredDataSets as List<ILineDataSet>?)
-                chart.notifyDataSetChanged()
-                chart.invalidate()
+                updateChart()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Another interface callback
             }
+        }
+
+        previousBtn.setOnClickListener {
+            page -= 1
+            updateChart()
+        }
+
+        nextBtn.setOnClickListener {
+            page += 1
+            updateChart()
         }
 
         chart.xAxis.labelRotationAngle = 0f
@@ -100,15 +124,49 @@ class ChartFragment : Fragment() {
     private fun getData(messages:List<Message>): ArrayList<Entry> {
         var day = 0L
         val entries = ArrayList<Entry>()
+        val start = PAGE_SIZE*page
+        val end = if(start+PAGE_SIZE < messages.size) start+PAGE_SIZE
+                    else messages.size
 
-        messages.forEach {
+
+        if(page == 0){
+            if(messages.size > totalMaxSize){
+                totalMaxSize = messages.size
+            }
+        }
+
+
+        var subMessages = messages
+
+        if(start > messages.size){
+            return entries
+        }
+
+        if(totalMaxSize > PAGE_SIZE){
+            paginationLL.visibility = View.VISIBLE
+            subMessages = messages.subList(start+1,end)
+            paginationTV.text="$start to ${if(end < totalMaxSize) start+PAGE_SIZE else end} out of $totalMaxSize records"
+            if(page > 0){
+                previousBtn.visibility = View.VISIBLE
+            }else{
+                previousBtn.visibility = View.GONE
+            }
+            if(page  < totalMaxSize/ PAGE_SIZE){
+                nextBtn.visibility = View.VISIBLE
+            }else{
+                nextBtn.visibility = View.GONE
+            }
+        }else{
+            paginationLL.visibility = View.GONE
+        }
+
+        subMessages.forEach {
             val duration = Duration.between(it.date_time,LocalDateTime.now())
             var daysBefore = duration.toDays().toFloat()
             if(duration.toDays() != day){
                 day = duration.toDays()
             }else{
                 // if transaction on the same day take the fraction of the day
-                // (duration.toHours()-daysBefore*24) gets the hour of the day
                daysBefore+= (duration.toHours()-daysBefore*24)/24
             }
 
@@ -118,9 +176,11 @@ class ChartFragment : Fragment() {
                 // remove comma
                 {c->c!=',' }.toFloat(),
             ))
+
         }
 
-        return entries;
+
+        return entries
 
     }
 
@@ -148,5 +208,15 @@ class ChartFragment : Fragment() {
         return dataSet
     }
 
+    fun updateChart(){
+        val filteredDataSets = if (selectedBank == null) {
+            getAllBankDataSets()
+        } else {
+            getBankDataSets(selectedBank!!)
+        }
 
+        chart.data = LineData(filteredDataSets as List<ILineDataSet>?)
+        chart.notifyDataSetChanged()
+        chart.invalidate()
+    }
 }

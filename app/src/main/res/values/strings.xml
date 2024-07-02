@@ -13,6 +13,8 @@
     <string name="bank_name">Bank Name</string>
     <string name="estimated_balance">Estimated Balance :</string>
     <string name="last_text">Last Text :</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
     <string-array name="dropdown_items">
         <item>All</item>
         <item>CBE</item>

@@ -38,12 +38,61 @@
                 />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/paginationLL"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/small"
+            android:paddingHorizontal="@dimen/small"
+            >
+            <TextView
+                android:ellipsize="end"
+                android:id="@+id/previousBtn"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.17"
+                android:layout_width="0dp"
+                android:paddingVertical="@dimen/xxSmall"
+                android:singleLine="false"
+                android:textAlignment="center"
+                style="@style/txtRoundedActive"
+                android:maxLines="2"
+                android:textSize="@dimen/normal_text"
+                android:text="@string/previous"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/paginationTV"
+                android:layout_weight="0.4"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:ellipsize="end"
+                android:id="@+id/nextBtn"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.17"
+                android:layout_width="0dp"
+                android:paddingVertical="@dimen/xxSmall"
+                android:singleLine="false"
+                android:textAlignment="center"
+                style="@style/txtRoundedActive"
+                android:maxLines="2"
+                android:textSize="@dimen/normal_text"
+                android:text="@string/next"/>
+        </LinearLayout>
+
+
         <!--Ui component for our bar chart-->
         <com.github.mikephil.charting.charts.LineChart
             android:layout_marginTop="@dimen/xLarge"
             android:id="@+id/idLineChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+
     </LinearLayout>
 
 </FrameLayout>
