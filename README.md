@@ -46,6 +46,7 @@ To run this project, you will need Android Studio and an Android device or emula
 
 - **Functionality**: Visualizes transaction amount on a line chart (x-axis: days ago , y-axis: balance) .
 - **Filters**: Includes a dropdown to filter data by bank.
+- **Pagination**: Includes pagination 100 records per page.
 - **Interactivity**:
   - Supports vertical zoom to adjust value scale and horizontal zoom to adjust the time range.
   - Tap on data points to view transaction amounts and details.
@@ -54,7 +55,9 @@ To run this project, you will need Android Studio and an Android device or emula
 
 - **Dynamic Bank Addition**: Introduce a settings page to add and configure new banks and their SMS codes.
 - **Time Filters**: Implement filtering options based on the transaction date and time.
-- **Pagination**: Implement pagination and loading status for efficiency.
+- **Loading State**: Implement loading state with indicator for user experience.
+  
+
 
 
 ## Preview
